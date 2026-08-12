@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import Tenant from '#models/tenant'
 import Customer from '#models/customer'
 
 export default class Transaction extends BaseModel {
@@ -8,16 +9,16 @@ export default class Transaction extends BaseModel {
   declare id: number
 
   @column()
+  declare tenantId: number
+
+  @column()
   declare customerId: number
 
   @column()
-  declare type: 'PURCHASE' | 'PAYMENT'
+  declare amount: number
 
   @column()
-  declare amountUsd: number
-
-  @column()
-  declare exchangeRateBcv: number | null
+  declare type: 'credit' | 'payment'
 
   @column()
   declare description: string | null
@@ -27,6 +28,9 @@ export default class Transaction extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @belongsTo(() => Tenant)
+  declare tenant: BelongsTo<typeof Tenant>
 
   @belongsTo(() => Customer)
   declare customer: BelongsTo<typeof Customer>

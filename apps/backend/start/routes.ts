@@ -46,6 +46,15 @@ router
 
         // ─── Webhook (n8n WhatsApp) ───────────────────────────────────────────────
         router.post('webhook/whatsapp', [WebhookController, 'handle'])
+
+        // ─── Admin SaaS ─────────────────────────────────────────────────────────
+        const TenantsController = () => import('#controllers/admin/tenants_controller')
+        const BotsController = () => import('#controllers/admin/bots_controller')
+        const InventoriesController = () => import('#controllers/admin/inventories_controller')
+        
+        router.resource('admin/tenants', TenantsController).apiOnly()
+        router.resource('admin/bots', BotsController).apiOnly()
+        router.resource('admin/inventories', InventoriesController).apiOnly()
     })
     .prefix('/api')
     .use(middleware.apiKey())
