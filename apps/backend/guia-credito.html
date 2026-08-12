@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Definitivo - Crédito Hipotecario</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-top: 40px;
+            background-color: var(--bg-color);
+            padding: 10px 15px;
+            border-left: 5px solid var(--secondary-color);
+            border-radius: 4px;
+        }
+
+        .tramite-lugar {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            font-style: italic;
+            display: block;
+            margin-top: 2px;
+            margin-bottom: 8px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .checklist-item:hover {
+            background-color: #f1f4f8;
+            border-radius: 4px;
+        }
+
+        input[type="checkbox"] {
+            margin-top: 5px;
+            margin-right: 15px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .recomendaciones {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .recomendaciones h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #95a5a6;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            .checklist-item:hover {
+                background-color: transparent;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Expediente de Crédito Hipotecario</h1>
+
+    <h2>1. Gestiones Internas (El Banco)</h2>
+
+    <div class="checklist-item">
+        <input type="checkbox" id="banco2">
+        <label for="banco2">
+            <strong>Finiquito de Credinómina:</strong> Solicitar la constancia de cancelación total si aplica.
+            <span class="tramite-lugar">📍 Dónde: Sistema interno del banco o atención al empleado.</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="banco3">
+        <label for="banco3">
+            <strong>Planilla de Solicitud de Crédito:</strong> Llenar el archivo Excel oficial con todos los datos sin
+            tachaduras.
+        </label>
+    </div>
+
+    <h2>2. Estructuración Financiera de Gaby (Cosolicitante Independiente)</h2>
+    <div class="checklist-item">
+        <input type="checkbox" id="gaby1">
+        <label for="gaby1">
+            <strong>Apertura de Cuenta Bancaria:</strong> Abrir una cuenta corriente o de ahorros a su nombre para
+            domiciliar pagos y cumplir normativas KYC.
+            <span class="tramite-lugar">📍 Dónde: Plataforma digital de tu banco o agencia principal.</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="gaby2">
+        <label for="gaby2">
+            <strong>Certificación de Ingresos y Balance Personal:</strong> Dictamen detallando ingresos por ventas
+            independientes. El monto debe ser realista y comprobable.
+            <span class="tramite-lugar">📍 Dónde: Contador Público Colegiado (CPC) activo y solvente.</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="gaby3">
+        <label for="gaby3">
+            <strong>Estados de Cuenta Bancarios (Últimos 3 a 6 meses):</strong> Los depósitos reflejados aquí deben
+            coincidir con la Certificación de Ingresos del contador.
+            <span class="tramite-lugar">📍 Dónde: Agencias de los bancos que ella utiliza (deben ir firmados y sellados
+                en original).</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="gaby4">
+        <label for="gaby4">
+            <strong>Inscripción y Solvencia en BANAVIH (FAVV):</strong> Registro en el Fondo de Ahorro Voluntario. Debe
+            usar la opción "Cargar Deuda" para pagar el 3% retroactivo (mínimo 12 meses) en base al ingreso certificado.
+            <span class="tramite-lugar">📍 Dónde: Portal web FAOV/FAVV en línea (pago a través de la banca
+                pública/privada autorizada).</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="gaby5">
+        <label for="gaby5">
+            <strong>Estatus Tributario (ISLR):</strong> Carta de No Presentación de ISLR (si sus ganancias netas anuales
+            no superan las 1.000 U.T.) o la planilla definitiva de declaración.
+            <span class="tramite-lugar">📍 Dónde: Redacción propia (Carta) o Portal web del SENIAT.</span>
+        </label>
+    </div>
+
+    <h2>3. Carpeta Personal y Familiar (Roy y Gaby)</h2>
+    <div class="checklist-item">
+        <input type="checkbox" id="docs1">
+        <label for="docs1">
+            <strong>Cédula de Identidad y RIF:</strong> Copias vigentes y legibles de ambos.
+            <span class="tramite-lugar">📍 Dónde: Portal web del SENIAT (para actualizar el RIF).</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="docs2">
+        <label for="docs2">
+            <strong>Acta de Matrimonio:</strong> Copia certificada.
+            <span class="tramite-lugar">📍 Dónde: Registro Civil correspondiente.</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="docs3">
+        <label for="docs3">
+            <strong>Declaración Jurada de No Poseer Vivienda:</strong> Firmada y con huellas dactilares.
+            <span class="tramite-lugar">📍 Dónde: SAREN o usar el formato Word oficial (VPCV-FO-005) del banco.</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="docs4">
+        <label for="docs4">
+            <strong>Soportes Laborales (Titular):</strong> Constancia de trabajo vigente (máximo 30 días) y recibos de
+            pago de los últimos 3 meses.
+            <span class="tramite-lugar">📍 Dónde: Recursos Humanos.</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="docs5">
+        <label for="docs5">
+            <strong>Estados de Cuenta y ISLR (Titular):</strong> Últimos 3 meses de cuenta nómina (firmados/sellados) y
+            última declaración de ISLR.
+        </label>
+    </div>
+
+    <h2>4. Documentación del Inmueble y Vendedor</h2>
+    <div class="checklist-item">
+        <input type="checkbox" id="inm1">
+        <label for="inm1">
+            <strong>Documento de Propiedad:</strong> Registrado a nombre de los vendedores actuales.
+            <span class="tramite-lugar">📍 Dónde: Se lo exiges al propietario (Registro Público).</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="inm2">
+        <label for="inm2">
+            <strong>Cédula Catastral Vigente y Solvencia Municipal:</strong>
+            <span class="tramite-lugar">📍 Dónde: Alcaldía del municipio correspondiente en Caracas.</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="inm3">
+        <label for="inm3">
+            <strong>Registro de Vivienda Principal:</strong> Del vendedor.
+            <span class="tramite-lugar">📍 Dónde: Portal del SENIAT.</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="inm4">
+        <label for="inm4">
+            <strong>Liberación de Hipoteca (¡Crítico!):</strong> Si el inmueble estuvo hipotecado, exigir el documento
+            registrado de liberación.
+            <span class="tramite-lugar">📍 Dónde: Registro Público.</span>
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="inm5">
+        <label for="inm5">
+            <strong>Solvencias de Servicios y Condominio:</strong> Recibos en cero de Corpoelec, Hidrocapital, Aseo,
+            Internet y carta de solvencia de la administradora.
+        </label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="inm6">
+        <label for="inm6">
+            <strong>Documentos Personales del Vendedor:</strong> Cédula, RIF y Acta de Matrimonio (vigentes).
+        </label>
+    </div>
+
+    <h2>5. Provisiones Económicas (Fondo de Reserva: ~$2.500)</h2>
+    <div class="checklist-item">
+        <input type="checkbox" id="pago1">
+        <label for="pago1"><strong>Honorarios del Perito Avaluador</strong> (Contactar a Aquiles Arias u otro
+            certificado por SUDEBAN).</label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="pago2">
+        <label for="pago2"><strong>Pólizas de Seguros obligatorias</strong> (Vida, Incendio y Terremoto).</label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="pago3">
+        <label for="pago3"><strong>Redacción de Documento de Reserva</strong> (Abogado de confianza). El documento
+            definitivo de compra-venta lo hace el banco.</label>
+    </div>
+    <div class="checklist-item">
+        <input type="checkbox" id="pago4">
+        <label for="pago4"><strong>Aranceles de Registro Público</strong> y pagos ante el SAREN para la
+            protocolización.</label>
+    </div>
+
+    <div class="recomendaciones">
+        <h3>💡 Recomendaciones Estratégicas</h3>
+        <ul>
+            <li><span class="highlight">La regla de oro bancaria:</span> El ingreso que certifique el contador para Gaby
+                debe ser matemáticamente igual al que se declare en el BANAVIH y debe tener respaldo en los depósitos de
+                sus estados de cuenta. Eviten inflar cifras.</li>
+            <li><span class="highlight">Búsqueda en Caracas:</span> Filtra apartamentos preferiblemente en pisos bajos.
+                Verifica rigurosamente que el edificio cuente con gas directo y suministro de agua constante.</li>
+            <li><span class="highlight">Entorno Familiar:</span> Al visitar zonas, mapea la distancia a farmacias,
+                hospitales y, muy importante, la cercanía y calidad de los colegios para Roy David y Máximo.</li>
+            <li><span class="highlight">Táctica de Negociación:</span> Si el banco te aprueba un límite de $30.000, dile
+                a los vendedores o inmobiliarias que tu tope es de $25.000. Nunca reveles tu techo máximo para tener
+                margen de regateo.</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        Preparado para Roy Ramos | Gestión de Crédito Hipotecario Adquisición
+    </div>
+
+</body>
+
+</html>
