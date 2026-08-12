@@ -1,15 +1,22 @@
-import { prisma } from "@/lib/prisma";
 import { InventoryTable } from "@/components/inventory-table";
 
 export const dynamic = "force-dynamic";
 
-export default async function InventoryPage() {
-    const rawProducts = await prisma.inventory.findMany({
-        orderBy: { id: "desc" },
-    });
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333/api/admin";
 
-    // Serialize Decimal objects to plain numbers for Client Component compatibility
-    const products = JSON.parse(JSON.stringify(rawProducts));
+export default async function InventoryPage() {
+    const res = await fetch(`${API_URL}/inventories?tenantId=1`, { cache: 'no-store' });
+    const rawProducts = res.ok ? await res.json() : [];
+
+    // Map Adonis models to the format expected by the frontend
+    const products = rawProducts.map((p: any) => ({
+        ...p,
+        cost_price: Number(p.costPrice ?? 0),
+        sale_price: Number(p.salePrice ?? 0),
+        is_available: p.isAvailable,
+        image_url: p.imageUrl,
+        category: p.category?.name || 'General',
+    }));
 
     return (
         <div className="space-y-6">

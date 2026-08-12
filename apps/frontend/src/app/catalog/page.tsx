@@ -1,27 +1,26 @@
-import { prisma } from "@/lib/prisma";
 import { CatalogGrid } from "@/components/catalog-grid";
 
 export const dynamic = "force-dynamic";
 
-export default async function CatalogPage() {
-    const rawProducts = await prisma.inventory.findMany({
-        where: {
-            status: { not: "draft" },
-            is_available: true,
-        },
-        orderBy: { created_at: "desc" },
-    });
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333/api/admin";
 
-    // Serialize Decimal→number for Client Component
-    const products = rawProducts.map((p) => ({
+export default async function CatalogPage() {
+    const res = await fetch(`${API_URL}/inventories?tenantId=1`, { cache: 'no-store' });
+    const allProducts = res.ok ? await res.json() : [];
+
+    // Filter active products
+    const rawProducts = allProducts.filter((p: any) => p.status !== 'draft' && p.isAvailable);
+
+    // Map Adonis models to the format expected by the frontend
+    const products = rawProducts.map((p: any) => ({
         id: p.id,
         description: p.description,
-        category: p.category,
+        category: p.category?.name || 'General',
         size: p.size,
         color: p.color,
         style: p.style,
-        sale_price: Number(p.sale_price ?? 0),
-        image_url: p.image_url,
+        sale_price: Number(p.salePrice ?? 0),
+        image_url: p.imageUrl,
     }));
 
     return <CatalogGrid products={products} />;

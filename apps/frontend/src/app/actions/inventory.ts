@@ -1,31 +1,31 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { writeFile } from "fs/promises";
 import path from "path";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333/api/admin";
+const TENANT_ID = 1; // Default for now until we add multi-tenant auth context
+
 export type InventoryFormData = {
     description: string;
-    category: string;
+    categoryId: number;
     color: string;
     gender: string;
     style: string;
-    cost_price: number;
-    sale_price: number;
-    is_available: boolean;
+    costPrice: number;
+    salePrice: number;
+    isAvailable: boolean;
     status: string;
-    image_url?: string | null;
+    imageUrl?: string | null;
 };
 
 async function saveImageFile(file: File): Promise<string> {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Sanitize filename and prepend timestamp to avoid collisions
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
 
-    // Security check: validate file extension
     if (!/\.(jpg|jpeg|png|webp)$/i.test(safeName)) {
         throw new Error("Formato de imagen no permitido.");
     }
@@ -41,25 +41,33 @@ async function saveImageFile(file: File): Promise<string> {
 export async function createInventoryItem(formData: FormData) {
     try {
         const imageFile = formData.get("image_file") as File | null;
-        let image_url: string | null = null;
+        let imageUrl: string | null = null;
         if (imageFile && imageFile.size > 0) {
-            image_url = await saveImageFile(imageFile);
+            imageUrl = await saveImageFile(imageFile);
         }
 
-        const data: InventoryFormData = {
+        const payload = {
+            tenantId: TENANT_ID,
+            categoryId: parseInt(formData.get("category") as string) || 1, // Fallback if no category logic yet
             description: formData.get("description") as string,
-            category: formData.get("category") as string,
             color: formData.get("color") as string,
             gender: formData.get("gender") as string,
             style: formData.get("style") as string,
-            cost_price: parseFloat(formData.get("cost_price") as string) || 0,
-            sale_price: parseFloat(formData.get("sale_price") as string) || 0,
-            is_available: formData.get("is_available") === "on",
+            costPrice: parseFloat(formData.get("cost_price") as string) || 0,
+            salePrice: parseFloat(formData.get("sale_price") as string) || 0,
+            isAvailable: formData.get("is_available") === "on",
             status: formData.get("status") as string,
-            image_url,
+            imageUrl,
         };
 
-        await prisma.inventory.create({ data });
+        const res = await fetch(`${API_URL}/inventories`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error("API responded with an error");
+
         revalidatePath("/admin/inventory");
         revalidatePath("/catalog");
         return { success: true };
@@ -73,24 +81,30 @@ export async function updateInventoryItem(id: number, formData: FormData) {
     try {
         const imageFile = formData.get("image_file") as File | null;
 
-        const updateData: Partial<InventoryFormData> = {
+        const updateData: Partial<any> = {
+            categoryId: parseInt(formData.get("category") as string) || 1,
             description: formData.get("description") as string,
-            category: formData.get("category") as string,
             color: formData.get("color") as string,
             gender: formData.get("gender") as string,
             style: formData.get("style") as string,
-            cost_price: parseFloat(formData.get("cost_price") as string) || 0,
-            sale_price: parseFloat(formData.get("sale_price") as string) || 0,
-            is_available: formData.get("is_available") === "on",
+            costPrice: parseFloat(formData.get("cost_price") as string) || 0,
+            salePrice: parseFloat(formData.get("sale_price") as string) || 0,
+            isAvailable: formData.get("is_available") === "on",
             status: formData.get("status") as string,
         };
 
-        // Only update image if a new file was uploaded
         if (imageFile && imageFile.size > 0) {
-            updateData.image_url = await saveImageFile(imageFile);
+            updateData.imageUrl = await saveImageFile(imageFile);
         }
 
-        await prisma.inventory.update({ where: { id }, data: updateData });
+        const res = await fetch(`${API_URL}/inventories/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updateData)
+        });
+
+        if (!res.ok) throw new Error("API responded with an error");
+
         revalidatePath("/admin/inventory");
         revalidatePath("/catalog");
         return { success: true };
@@ -102,7 +116,9 @@ export async function updateInventoryItem(id: number, formData: FormData) {
 
 export async function deleteInventoryItem(id: number) {
     try {
-        await prisma.inventory.delete({ where: { id } });
+        const res = await fetch(`${API_URL}/inventories/${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error("API responded with an error");
+        
         revalidatePath("/admin/inventory");
         revalidatePath("/catalog");
         return { success: true };
