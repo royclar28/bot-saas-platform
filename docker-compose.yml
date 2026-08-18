@@ -80,6 +80,12 @@ services:
       - REDIS_PORT=6379
       - EVOLUTION_API_URL=http://evolution-api:8080
       - EVOLUTION_API_KEY=evolution_secret_key
+      - APP_KEY=oI18vJq6Qo12sQ1hL1vB_mZ1hK1vJq6Q
+      - LOG_LEVEL=info
+      - API_SECRET_KEY=super_secret_bot_key_123
+      - LLM_API_KEY=sk-dummy-llm-key
+      - EVOLUTION_INSTANCE_NAME=MerxBotSaaS
+
     # ports:
     #  - "3333:3333"
     labels:
