@@ -29,7 +29,7 @@ services:
       - saas_network
 
   evolution-api:
-    image: davidgatti/evolution-api:v2.2.0
+    image: evoapicloud/evolution-api:v2.2.0
     container_name: saas_evolution_api
     depends_on:
       - db
