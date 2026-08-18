@@ -7,8 +7,7 @@ export const createCustomerValidator = vine.compile(
     vine.object({
         phone: vine.string().trim().minLength(7).maxLength(20),
         name: vine.string().trim().minLength(2).maxLength(100).optional(),
-        trust_level: vine.number().min(1).max(3).optional(),
-    })
+            })
 )
 
 /**
@@ -17,6 +16,5 @@ export const createCustomerValidator = vine.compile(
 export const updateCustomerValidator = vine.compile(
     vine.object({
         name: vine.string().trim().minLength(2).maxLength(100).optional(),
-        trust_level: vine.number().min(1).max(3).optional(),
-    })
+            })
 )

@@ -52,8 +52,7 @@ export default class CustomersController {
         const customer = await Customer.create({
             phone: data.phone,
             name: data.name,
-            trustLevel: data.trust_level ?? 1,
-        })
+                    })
         return response.created(customer)
     }
 
@@ -67,8 +66,7 @@ export default class CustomersController {
         const data = await updateCustomerValidator.validate(request.all())
         customer.merge({
             name: data.name,
-            trustLevel: data.trust_level,
-        })
+                    })
         await customer.save()
         return response.ok(customer)
     }

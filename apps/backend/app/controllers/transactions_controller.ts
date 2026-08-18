@@ -20,10 +20,10 @@ export default class TransactionsController {
 
     /**
      * POST /api/customers/:customerId/transactions
-     * Registra una compra (PURCHASE) o un abono (PAYMENT).
+     * Registra una compra (credit) o un abono (payment).
      * Actualiza automáticamente current_debt del cliente.
      *
-     * Body: { type, amount_usd, exchange_rate_bcv?, description? }
+     * Body: { type, amount, exchange_rate_bcv?, description? }
      */
     async store({ params, request, response }: HttpContext) {
         const customer = await Customer.findOrFail(params.customerId)
@@ -34,20 +34,19 @@ export default class TransactionsController {
                 {
                     customerId: customer.id,
                     type: data.type,
-                    amountUsd: data.amount_usd,
-                    exchangeRateBcv: data.exchange_rate_bcv ?? null,
-                    description: data.description ?? null,
+                    amount: data.amount,
+                                        description: data.description ?? null,
                 },
                 { client: trx }
             )
 
             // Actualizar la deuda del cliente automáticamente
-            if (data.type === 'PURCHASE') {
-                customer.currentDebt = Number(customer.currentDebt) + Number(data.amount_usd)
+            if (data.type === 'credit') {
+                customer.currentDebt = Number(customer.currentDebt) + Number(data.amount)
             } else {
                 customer.currentDebt = Math.max(
                     0,
-                    Number(customer.currentDebt) - Number(data.amount_usd)
+                    Number(customer.currentDebt) - Number(data.amount)
                 )
             }
 

@@ -5,9 +5,8 @@ import vine from '@vinejs/vine'
  */
 export const createTransactionValidator = vine.compile(
     vine.object({
-        type: vine.enum(['PURCHASE', 'PAYMENT']),
-        amount_usd: vine.number().min(0.01).decimal([0, 2]),
-        exchange_rate_bcv: vine.number().min(0).decimal([0, 2]).optional(),
-        description: vine.string().trim().maxLength(255).optional(),
+        type: vine.enum(['credit', 'payment']),
+        amount: vine.number().min(0.01).decimal([0, 2]),
+                description: vine.string().trim().maxLength(255).optional(),
     })
 )
