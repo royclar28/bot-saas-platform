@@ -10,8 +10,8 @@ services:
       POSTGRES_DB: saas_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    # ports:
+    #  - "5432:5432" # Comentado para evitar choque con bases de datos existentes
     restart: unless-stopped
     networks:
       - saas_network
@@ -22,8 +22,8 @@ services:
     command: redis-server --requirepass saas_redis_password
     volumes:
       - redis_data:/data
-    ports:
-      - "6379:6379"
+    # ports:
+    #  - "6379:6379" # Comentado para evitar choque
     restart: unless-stopped
     networks:
       - saas_network
@@ -44,11 +44,16 @@ services:
       - DATABASE_CONNECTION_URI=postgresql://saas_user:saas_password@db:5432/saas_db?schema=evolution
       - CACHE_REDIS_URI=redis://:saas_redis_password@redis:6379/2
       - QUEUE_REDIS_URI=redis://:saas_redis_password@redis:6379/3
-    ports:
-      - "8080:8080"
+    # ports:
+    #  - "8080:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.saas_evolution.rule=Host(`waba.merxpos.com`)"
+      - "traefik.http.services.saas_evolution.loadbalancer.server.port=8080"
     restart: unless-stopped
     networks:
       - saas_network
+      - coolify
     volumes:
       - evolution_instances:/evolution/instances
 
@@ -75,11 +80,16 @@ services:
       - REDIS_PORT=6379
       - EVOLUTION_API_URL=http://evolution-api:8080
       - EVOLUTION_API_KEY=evolution_secret_key
-    ports:
-      - "3333:3333"
+    # ports:
+    #  - "3333:3333"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.saas_backend.rule=Host(`api-bot.merxpos.com`)"
+      - "traefik.http.services.saas_backend.loadbalancer.server.port=3333"
     restart: unless-stopped
     networks:
       - saas_network
+      - coolify
 
   frontend:
     build:
@@ -92,11 +102,16 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - NEXT_PUBLIC_API_URL=http://localhost:3333/api/admin
-    ports:
-      - "3000:3000"
+    # ports:
+    #  - "3000:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.saas_frontend.rule=Host(`bot.merxpos.com`)"
+      - "traefik.http.services.saas_frontend.loadbalancer.server.port=3000"
     restart: unless-stopped
     networks:
       - saas_network
+      - coolify
 
 volumes:
   postgres_data:
@@ -106,3 +121,5 @@ volumes:
 networks:
   saas_network:
     driver: bridge
+  coolify:
+    external: true
