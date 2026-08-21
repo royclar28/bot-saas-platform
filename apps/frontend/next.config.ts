@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       bodySizeLimit: "10mb",
+      allowedOrigins: ["bot.merxpos.com", "*.merxpos.com", "localhost:3000"],
     },
   },
 };
