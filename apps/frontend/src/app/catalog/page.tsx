@@ -2,14 +2,14 @@ import { CatalogGrid } from "@/components/catalog-grid";
 
 export const dynamic = "force-dynamic";
 
-const API_URL = process.env.INTERNAL_API_URL || "http://saas_backend:3333/api/admin";
+const API_URL = process.env.INTERNAL_API_URL || "http://saas_backend:3333/api";
 
 export default async function CatalogPage() {
-    const res = await fetch(`${API_URL}/inventories?tenantId=1`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/catalog?tenantId=1`, { cache: 'no-store' });
     const allProducts = res.ok ? await res.json() : [];
 
     // Filter active products
-    const rawProducts = allProducts.filter((p: any) => p.status !== 'draft' && p.isAvailable);
+    const rawProducts = allProducts;
 
     // Map Adonis models to the format expected by the frontend
     const products = rawProducts.map((p: any) => ({

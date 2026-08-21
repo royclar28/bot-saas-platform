@@ -26,6 +26,10 @@ router.get('/api/health', async () => ({
     service: 'gabystore-v2-backend',
 }))
 
+// ─── Catálogo Público ────────────────────────────────────────────────────────
+const CatalogController = () => import('#controllers/catalog_controller')
+router.get('/api/catalog', [CatalogController, 'index'])
+
 // ─── Clientes (Fiados) ───────────────────────────────────────────────────────
 router
     .group(() => {
