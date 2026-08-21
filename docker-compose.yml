@@ -48,9 +48,17 @@ services:
     #  - "8080:8080"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.saas_evolution.rule=Host(`waba.merxpos.com`)"
       - "traefik.docker.network=coolify"
-      - "traefik.http.services.saas_evolution.loadbalancer.server.port=8080"
+      - "traefik.http.routers.http-0-evolution_api.entryPoints=http"
+      - "traefik.http.routers.http-0-evolution_api.rule=Host(`waba.merxpos.com`)"
+      - "traefik.http.routers.http-0-evolution_api.service=http-0-evolution_api"
+      - "traefik.http.routers.https-0-evolution_api.entryPoints=https"
+      - "traefik.http.routers.https-0-evolution_api.rule=Host(`waba.merxpos.com`)"
+      - "traefik.http.routers.https-0-evolution_api.service=https-0-evolution_api"
+      - "traefik.http.routers.https-0-evolution_api.tls=true"
+      - "traefik.http.routers.https-0-evolution_api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.http-0-evolution_api.loadbalancer.server.port=8080"
+      - "traefik.http.services.https-0-evolution_api.loadbalancer.server.port=8080"
     restart: unless-stopped
     networks:
       - saas_network
@@ -91,9 +99,17 @@ services:
     #  - "3333:3333"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.saas_backend.rule=Host(`api-bot.merxpos.com`)"
       - "traefik.docker.network=coolify"
-      - "traefik.http.services.saas_backend.loadbalancer.server.port=3333"
+      - "traefik.http.routers.http-0-backend.entryPoints=http"
+      - "traefik.http.routers.http-0-backend.rule=Host(`api-bot.merxpos.com`)"
+      - "traefik.http.routers.http-0-backend.service=http-0-backend"
+      - "traefik.http.routers.https-0-backend.entryPoints=https"
+      - "traefik.http.routers.https-0-backend.rule=Host(`api-bot.merxpos.com`)"
+      - "traefik.http.routers.https-0-backend.service=https-0-backend"
+      - "traefik.http.routers.https-0-backend.tls=true"
+      - "traefik.http.routers.https-0-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.http-0-backend.loadbalancer.server.port=3333"
+      - "traefik.http.services.https-0-backend.loadbalancer.server.port=3333"
     restart: unless-stopped
     networks:
       - saas_network
@@ -114,9 +130,17 @@ services:
     #  - "3000:3000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.saas_frontend.rule=Host(`bot.merxpos.com`)"
       - "traefik.docker.network=coolify"
-      - "traefik.http.services.saas_frontend.loadbalancer.server.port=3000"
+      - "traefik.http.routers.http-0-frontend.entryPoints=http"
+      - "traefik.http.routers.http-0-frontend.rule=Host(`bot.merxpos.com`)"
+      - "traefik.http.routers.http-0-frontend.service=http-0-frontend"
+      - "traefik.http.routers.https-0-frontend.entryPoints=https"
+      - "traefik.http.routers.https-0-frontend.rule=Host(`bot.merxpos.com`)"
+      - "traefik.http.routers.https-0-frontend.service=https-0-frontend"
+      - "traefik.http.routers.https-0-frontend.tls=true"
+      - "traefik.http.routers.https-0-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.http-0-frontend.loadbalancer.server.port=3000"
+      - "traefik.http.services.https-0-frontend.loadbalancer.server.port=3000"
     restart: unless-stopped
     networks:
       - saas_network
