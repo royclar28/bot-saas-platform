@@ -21,12 +21,19 @@ export default class StatsController {
             .count('* as total')
         const todayTransactions = todayTransactionsResult[0].total
 
+        const totalBotMessagesResult = await db.from('chat_histories').count('* as total');
+        const totalBotMessages = totalBotMessagesResult[0].total;
+
+        const recentTransactions = await db.from('transactions').orderBy('created_at', 'desc').limit(5);
+
         return response.ok({
             data: {
                 total_customers: Number(totalCustomers),
                 total_debt_usd: Number(totalDebt),
                 transactions_today: Number(todayTransactions),
+                total_bot_messages: Number(totalBotMessages),
+                recent_transactions: recentTransactions
             }
-        })
+        });
     }
 }
