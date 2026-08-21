@@ -125,7 +125,9 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
-      - NEXT_PUBLIC_API_URL=http://localhost:3333/api/admin
+      - NEXT_PUBLIC_API_URL=https://api-bot.merxpos.com/api/admin
+      - AUTH_SECRET=my_super_secret_auth_key_123
+      - ADMIN_PASSWORD=admin123
     # ports:
     #  - "3000:3000"
     labels:
