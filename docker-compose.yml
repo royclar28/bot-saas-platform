@@ -49,6 +49,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.saas_evolution.rule=Host(`waba.merxpos.com`)"
+      - "traefik.docker.network=coolify"
       - "traefik.http.services.saas_evolution.loadbalancer.server.port=8080"
     restart: unless-stopped
     networks:
@@ -91,6 +92,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.saas_backend.rule=Host(`api-bot.merxpos.com`)"
+      - "traefik.docker.network=coolify"
       - "traefik.http.services.saas_backend.loadbalancer.server.port=3333"
     restart: unless-stopped
     networks:
@@ -113,6 +115,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.saas_frontend.rule=Host(`bot.merxpos.com`)"
+      - "traefik.docker.network=coolify"
       - "traefik.http.services.saas_frontend.loadbalancer.server.port=3000"
     restart: unless-stopped
     networks:
