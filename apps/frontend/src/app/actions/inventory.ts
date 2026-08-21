@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { writeFile } from "fs/promises";
 import path from "path";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333/api/admin";
+const API_URL = process.env.INTERNAL_API_URL || "http://saas_backend:3333/api/admin";
 const TENANT_ID = 1; // Default for now until we add multi-tenant auth context
 
 export type InventoryFormData = {

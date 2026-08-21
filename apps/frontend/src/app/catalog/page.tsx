@@ -2,7 +2,7 @@ import { CatalogGrid } from "@/components/catalog-grid";
 
 export const dynamic = "force-dynamic";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333/api/admin";
+const API_URL = process.env.INTERNAL_API_URL || "http://saas_backend:3333/api/admin";
 
 export default async function CatalogPage() {
     const res = await fetch(`${API_URL}/inventories?tenantId=1`, { cache: 'no-store' });
