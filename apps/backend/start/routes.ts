@@ -54,6 +54,8 @@ router
         
         router.resource('admin/tenants', TenantsController).apiOnly()
         router.resource('admin/bots', BotsController).apiOnly()
+        router.get('admin/bots/:id/qr', [BotsController, 'qr'])
+        router.put('admin/bots/:id/role', [BotsController, 'updateRole'])
         router.resource('admin/inventories', InventoriesController).apiOnly()
     })
     .prefix('/api')
