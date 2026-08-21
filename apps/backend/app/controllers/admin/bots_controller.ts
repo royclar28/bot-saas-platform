@@ -44,7 +44,7 @@ export default class BotsController {
       const stateRes = await fetch(`${evolutionUrl}/instance/connectionState/${instanceName}`, {
         headers: { 'apikey': apikey }
       })
-      const stateData = await stateRes.json()
+      const stateData = await stateRes.json() as any
 
       if (stateData?.instance?.state === 'open') {
         bot.status = 'connected'
@@ -56,7 +56,7 @@ export default class BotsController {
       const connectRes = await fetch(`${evolutionUrl}/instance/connect/${instanceName}`, {
         headers: { 'apikey': apikey }
       })
-      const connectData = await connectRes.json()
+      const connectData = await connectRes.json() as any
       
       return response.ok({ 
         status: 'pending', 
