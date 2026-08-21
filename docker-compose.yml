@@ -128,6 +128,8 @@ services:
       - NEXT_PUBLIC_API_URL=https://api-bot.merxpos.com/api/admin
       - AUTH_SECRET=my_super_secret_auth_key_123456
       - ADMIN_PASSWORD=admin123
+      - AUTH_TRUST_HOST=true
+      - AUTH_URL=https://bot.merxpos.com
     # ports:
     #  - "3000:3000"
     labels:
