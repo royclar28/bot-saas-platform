@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, ShoppingBag, Sparkles, LogOut, BotMessageSquare } from "lucide-react";
+import { Package, ShoppingBag, Sparkles, LogOut, BotMessageSquare, LayoutDashboard } from "lucide-react";
 import { logout } from "@/app/actions/auth";
 import { STORE_NAME } from "@/lib/store";
 
@@ -20,6 +20,11 @@ import {
 } from "@/components/ui/sidebar";
 
 const navItems = [
+    {
+        title: "Dashboard",
+        href: "/admin/dashboard",
+        icon: LayoutDashboard,
+    },
     {
         title: "Inventario",
         href: "/admin/inventory",
@@ -41,7 +46,7 @@ export function AppSidebar() {
     const pathname = usePathname();
 
     return (
-        <Sidebar>
+        <Sidebar className="glass-card border-r-0 border-white/10">
             <SidebarHeader className="border-b px-6 py-5">
                 <Link href="/admin/inventory" className="flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-primary" />
