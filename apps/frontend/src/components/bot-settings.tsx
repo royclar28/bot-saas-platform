@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, QrCode, Bot as BotIcon, RefreshCw, Save } from "lucide-react";
 import { getBotQR, updateBotPrompt } from "@/app/actions/bot";
 
 export function BotSettings({ bot }: { bot: any }) {
+    const [activeTab, setActiveTab] = useState<"whatsapp" | "agent">("whatsapp");
     const [qrCode, setQrCode] = useState<string | null>(null);
     const [status, setStatus] = useState<string>(bot.status || 'disconnected');
     const [isLoadingQR, setIsLoadingQR] = useState(false);
@@ -54,17 +54,27 @@ export function BotSettings({ bot }: { bot: any }) {
                 <p className="text-muted-foreground">Conecta WhatsApp y personaliza tu agente de IA.</p>
             </div>
 
-            <Tabs defaultValue="whatsapp">
-                <TabsList className="mb-6 grid w-full grid-cols-2">
-                    <TabsTrigger value="whatsapp" className="flex items-center gap-2">
-                        <QrCode className="h-4 w-4" /> Conexión WhatsApp
-                    </TabsTrigger>
-                    <TabsTrigger value="agent" className="flex items-center gap-2">
-                        <BotIcon className="h-4 w-4" /> Personalidad IA
-                    </TabsTrigger>
-                </TabsList>
+            <div className="mb-6 flex space-x-1 rounded-xl bg-secondary/50 p-1">
+                <button
+                    onClick={() => setActiveTab("whatsapp")}
+                    className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-all ${
+                        activeTab === "whatsapp" ? "bg-background text-foreground shadow" : "text-muted-foreground hover:bg-background/50 hover:text-foreground"
+                    }`}
+                >
+                    <QrCode className="h-4 w-4" /> Conexión WhatsApp
+                </button>
+                <button
+                    onClick={() => setActiveTab("agent")}
+                    className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium transition-all ${
+                        activeTab === "agent" ? "bg-background text-foreground shadow" : "text-muted-foreground hover:bg-background/50 hover:text-foreground"
+                    }`}
+                >
+                    <BotIcon className="h-4 w-4" /> Personalidad IA
+                </button>
+            </div>
 
-                <TabsContent value="whatsapp" className="space-y-4">
+            {activeTab === "whatsapp" && (
+                <div className="space-y-4">
                     <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
                         {status === 'connected' ? (
                             <div className="flex flex-col items-center text-emerald-600">
@@ -113,9 +123,11 @@ export function BotSettings({ bot }: { bot: any }) {
                             </div>
                         )}
                     </div>
-                </TabsContent>
+                </div>
+            )}
 
-                <TabsContent value="agent" className="space-y-4">
+            {activeTab === "agent" && (
+                <div className="space-y-4">
                     <div className="space-y-4 rounded-lg border p-6">
                         <div>
                             <h3 className="text-lg font-semibold">Instrucciones del Agente (System Prompt)</h3>
@@ -141,8 +153,8 @@ export function BotSettings({ bot }: { bot: any }) {
                             </button>
                         </div>
                     </div>
-                </TabsContent>
-            </Tabs>
+                </div>
+            )}
         </div>
     );
 }
