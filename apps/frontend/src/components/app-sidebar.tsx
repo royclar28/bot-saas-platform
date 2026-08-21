@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, ShoppingBag, Sparkles, LogOut } from "lucide-react";
+import { Package, ShoppingBag, Sparkles, LogOut, BotMessageSquare } from "lucide-react";
 import { logout } from "@/app/actions/auth";
 import { STORE_NAME } from "@/lib/store";
 
@@ -29,6 +29,11 @@ const navItems = [
         title: "Catálogo Público",
         href: "/catalog",
         icon: ShoppingBag,
+    },
+    {
+        title: "Configuración Bot",
+        href: "/admin/bot",
+        icon: BotMessageSquare,
     },
 ];
 
