@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Loader2, QrCode, Bot as BotIcon, RefreshCw, Save } from "lucide-react";
 import { getBotQR, updateBotPrompt } from "@/app/actions/bot";
+import { toast } from "sonner";
 
 export function BotSettings({ bot }: { bot: any }) {
     const [activeTab, setActiveTab] = useState<"whatsapp" | "agent">("whatsapp");
@@ -14,7 +15,6 @@ export function BotSettings({ bot }: { bot: any }) {
         bot.roles?.[0]?.promptTemplate || ""
     );
     const [isSaving, setIsSaving] = useState(false);
-    const [saveMessage, setSaveMessage] = useState("");
 
     useEffect(() => {
         if (status !== 'connected') {
@@ -39,10 +39,9 @@ export function BotSettings({ bot }: { bot: any }) {
         setIsSaving(true);
         const result = await updateBotPrompt(bot.id, promptTemplate);
         if (result.success) {
-            setSaveMessage("Guardado correctamente.");
-            setTimeout(() => setSaveMessage(""), 3000);
+            toast.success("Instrucciones guardadas correctamente.");
         } else {
-            setSaveMessage("Error al guardar.");
+            toast.error("Error al guardar las instrucciones.");
         }
         setIsSaving(false);
     };
@@ -141,8 +140,7 @@ export function BotSettings({ bot }: { bot: any }) {
                             className="min-h-[250px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                             placeholder="Eres un asistente virtual de ventas experto..."
                         />
-                        <div className="flex items-center justify-between">
-                            <span className="text-sm text-emerald-600">{saveMessage}</span>
+                        <div className="flex items-center justify-end">
                             <button
                                 onClick={handleSavePrompt}
                                 disabled={isSaving}
