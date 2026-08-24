@@ -19,7 +19,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: saas_redis
-    command: redis-server --requirepass saas_redis_password
+    
     volumes:
       - redis_data:/data
     # ports:
@@ -39,11 +39,11 @@ services:
       - DOCKER_ENV=true
       - LOG_LEVEL=ERROR
       - AUTHENTICATION_API_KEY=evolution_secret_key
-      - REDIS_URI=redis://:saas_redis_password@redis:6379/1
+      - REDIS_URI=redis://redis:6379/1
       - DATABASE_PROVIDER=postgresql
       - DATABASE_CONNECTION_URI=postgresql://saas_user:saas_password@db:5432/saas_db?schema=evolution
-      - CACHE_REDIS_URI=redis://:saas_redis_password@redis:6379/2
-      - QUEUE_REDIS_URI=redis://:saas_redis_password@redis:6379/3
+      - CACHE_REDIS_URI=redis://redis:6379/2
+      - QUEUE_REDIS_URI=redis://redis:6379/3
     # ports:
     #  - "8080:8080"
     labels:
@@ -85,8 +85,7 @@ services:
       - DB_PASSWORD=saas_password
       - DB_DATABASE=saas_db
       - REDIS_HOST=redis
-      - REDIS_PASSWORD=saas_redis_password
-      - REDIS_PORT=6379
+            - REDIS_PORT=6379
       - EVOLUTION_API_URL=http://evolution-api:8080
       - EVOLUTION_API_KEY=evolution_secret_key
       - APP_KEY=oI18vJq6Qo12sQ1hL1vB_mZ1hK1vJq6Q
