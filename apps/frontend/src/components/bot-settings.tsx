@@ -28,11 +28,18 @@ export function BotSettings({ bot }: { bot: any }) {
         if (data?.status === 'connected') {
             setStatus('connected');
             setQrCode(null);
+            setIsLoadingQR(false);
         } else if (data?.qrCode) {
             setQrCode(data.qrCode);
             setStatus('pending');
+            setIsLoadingQR(false);
+        } else if (data?.status === 'pending') {
+            // El motor está arrancando pero el QR aún no está listo.
+            // Hacemos polling automático en 2 segundos.
+            setTimeout(loadQR, 2000);
+        } else {
+            setIsLoadingQR(false);
         }
-        setIsLoadingQR(false);
     };
 
     const handleSavePrompt = async () => {
