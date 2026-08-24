@@ -20,6 +20,9 @@ export default class Customer extends BaseModel {
   @column()
   declare currentDebt: number
 
+  @column()
+  declare botEnabled: boolean
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
