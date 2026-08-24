@@ -125,6 +125,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      - HOSTNAME=0.0.0.0
       - NEXT_PUBLIC_API_URL=https://api-bot.merxpos.com/api/admin
       - AUTH_SECRET=my_super_secret_auth_key_123456
       - ADMIN_PASSWORD=admin123
