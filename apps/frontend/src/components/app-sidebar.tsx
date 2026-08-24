@@ -72,7 +72,7 @@ export function AppSidebar() {
                                         isActive={pathname === item.href}
                                         tooltip={item.title}
                                     >
-                                        <Link href={item.href}>
+                                        <Link href={item.href} target={item.href === "/catalog" ? "_blank" : undefined}>
                                             <item.icon />
                                             <span>{item.title}</span>
                                         </Link>

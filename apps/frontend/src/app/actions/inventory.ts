@@ -62,7 +62,7 @@ export async function createInventoryItem(formData: FormData) {
 
         const res = await fetch(`${API_URL}/inventories`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' },
             body: JSON.stringify(payload)
         });
 
@@ -99,7 +99,7 @@ export async function updateInventoryItem(id: number, formData: FormData) {
 
         const res = await fetch(`${API_URL}/inventories/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' },
             body: JSON.stringify(updateData)
         });
 
@@ -116,7 +116,7 @@ export async function updateInventoryItem(id: number, formData: FormData) {
 
 export async function deleteInventoryItem(id: number) {
     try {
-        const res = await fetch(`${API_URL}/inventories/${id}`, { method: 'DELETE' });
+        const res = await fetch(`${API_URL}/inventories/${id}`, { method: 'DELETE', headers: { 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' } });
         if (!res.ok) throw new Error("API responded with an error");
         
         revalidatePath("/admin/inventory");

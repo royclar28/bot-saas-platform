@@ -7,7 +7,7 @@ const TENANT_ID = 1;
 
 export async function getBotInfo() {
     try {
-        const res = await fetch(`${API_URL}/bots?tenantId=${TENANT_ID}`, { cache: 'no-store' });
+        const res = await fetch(`${API_URL}/bots?tenantId=${TENANT_ID}`, { cache: 'no-store', headers: { 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' } });
         if (!res.ok) return null;
         const data = await res.json();
         return data[0] || null;
@@ -19,7 +19,7 @@ export async function getBotInfo() {
 
 export async function getBotQR(botId: number) {
     try {
-        const res = await fetch(`${API_URL}/bots/${botId}/qr`, { cache: 'no-store' });
+        const res = await fetch(`${API_URL}/bots/${botId}/qr`, { cache: 'no-store', headers: { 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' } });
         if (!res.ok) return null;
         return await res.json();
     } catch (error) {
@@ -32,7 +32,7 @@ export async function updateBotPrompt(botId: number, promptTemplate: string) {
     try {
         const res = await fetch(`${API_URL}/bots/${botId}/role`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' },
             body: JSON.stringify({ promptTemplate })
         });
         if (!res.ok) return { success: false, error: "Failed to update prompt" };

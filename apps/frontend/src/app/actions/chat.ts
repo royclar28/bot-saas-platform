@@ -6,7 +6,7 @@ const API_URL = process.env.INTERNAL_API_URL || "http://saas_backend:3333/api/ad
 
 export async function getActiveChats() {
     try {
-        const res = await fetch(`${API_URL}/chat?tenantId=1`, { cache: 'no-store' });
+        const res = await fetch(`${API_URL}/chat?tenantId=1`, { cache: 'no-store', headers: { 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' } });
         if (!res.ok) return [];
         return await res.json();
     } catch (error) {
@@ -17,7 +17,7 @@ export async function getActiveChats() {
 
 export async function getChatMessages(sessionId: string) {
     try {
-        const res = await fetch(`${API_URL}/chat/${sessionId}`, { cache: 'no-store' });
+        const res = await fetch(`${API_URL}/chat/${sessionId}`, { cache: 'no-store', headers: { 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' } });
         if (!res.ok) return { messages: [], botEnabled: true };
         return await res.json();
     } catch (error) {
@@ -30,7 +30,7 @@ export async function toggleBotState(sessionId: string, enabled: boolean) {
     try {
         const res = await fetch(`${API_URL}/chat/${sessionId}/pause-bot`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' },
             body: JSON.stringify({ enabled })
         });
         if (!res.ok) return { success: false, error: "Failed to toggle bot" };
@@ -47,7 +47,7 @@ export async function sendManualMessage(sessionId: string, text: string) {
     try {
         const res = await fetch(`${API_URL}/chat/${sessionId}/send`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' },
             body: JSON.stringify({ text })
         });
         if (!res.ok) return { success: false, error: "Failed to send message" };
