@@ -55,12 +55,18 @@ router
         const TenantsController = () => import('#controllers/admin/tenants_controller')
         const BotsController = () => import('#controllers/admin/bots_controller')
         const InventoriesController = () => import('#controllers/admin/inventories_controller')
+        const ChatsController = () => import('#controllers/admin/chats_controller')
         
         router.resource('admin/tenants', TenantsController).apiOnly()
         router.resource('admin/bots', BotsController).apiOnly()
         router.get('admin/bots/:id/qr', [BotsController, 'qr'])
         router.put('admin/bots/:id/role', [BotsController, 'updateRole'])
         router.resource('admin/inventories', InventoriesController).apiOnly()
+
+        router.get('admin/chat', [ChatsController, 'index'])
+        router.get('admin/chat/:id', [ChatsController, 'show'])
+        router.post('admin/chat/:id/pause-bot', [ChatsController, 'toggleBot'])
+        router.post('admin/chat/:id/send', [ChatsController, 'send'])
     })
     .prefix('/api')
     .use(middleware.apiKey())
