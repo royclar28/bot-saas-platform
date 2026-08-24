@@ -39,11 +39,16 @@ services:
       - DOCKER_ENV=true
       - LOG_LEVEL=ERROR
       - AUTHENTICATION_API_KEY=evolution_secret_key
-      - REDIS_URI=redis://redis:6379/1
       - DATABASE_PROVIDER=postgresql
       - DATABASE_CONNECTION_URI=postgresql://saas_user:saas_password@db:5432/saas_db?schema=evolution
-      - CACHE_REDIS_URI=redis://redis:6379/2
-      - QUEUE_REDIS_URI=redis://redis:6379/3
+      - CACHE_REDIS_ENABLED=true
+      - CACHE_REDIS_URI=redis://redis:6379/1
+      - CACHE_REDIS_PREFIX_KEY=evo
+      - CACHE_LOCAL_ENABLED=false
+      - REDIS_ENABLED=true
+      - REDIS_URI=redis://redis:6379/2
+      - REDIS_PREFIX_KEY=evo
+      - RABBITMQ_ENABLED=false
     # ports:
     #  - "8080:8080"
     labels:
