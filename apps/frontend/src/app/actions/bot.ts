@@ -8,7 +8,7 @@ const TENANT_ID = 1;
 export async function getBotInfo() {
     try {
         const res = await fetch(`${API_URL}/bots?tenantId=${TENANT_ID}`, { cache: 'no-store', headers: { 'x-api-key': process.env.API_SECRET_KEY || 'super_secret_bot_key_123' } });
-        if (!res.ok) return null;
+        if (!res.ok) { console.error("Bot API error:", res.status, await res.text()); return null; }
         const data = await res.json();
         return data[0] || null;
     } catch (error) {
