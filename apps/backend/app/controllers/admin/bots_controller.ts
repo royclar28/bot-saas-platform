@@ -52,12 +52,37 @@ export default class BotsController {
         return response.ok({ status: 'connected' })
       }
 
-      // Fetch QR
+      // En Evolution v2, el QR puede venir directamente en el estado si está 'connecting'
+      if (stateData?.instance?.state === 'connecting' && (stateData?.base64 || stateData?.qrcode)) {
+          return response.ok({
+              status: 'pending',
+              qrCode: stateData?.base64 || stateData?.qrcode
+          })
+      }
+
+      // Fetch QR (esto inicia la conexión si estaba desconectado)
       const connectRes = await fetch(`${evolutionUrl}/instance/connect/${instanceName}`, {
         headers: { 'apikey': apikey }
       })
       const connectData = await connectRes.json() as any
       
+      // Si la API dice que ya está conectando pero no teníamos el QR (estado trabado), forzamos reinicio
+      if (connectData?.error?.includes('already') || connectData?.status === 403 || connectData?.status === 401) {
+          await fetch(`${evolutionUrl}/instance/logout/${instanceName}`, {
+              method: 'DELETE',
+              headers: { 'apikey': apikey }
+          })
+          // Al cerrar sesión, la instancia se libera. Volvemos a pedir el QR limpiecito.
+          const freshConnectRes = await fetch(`${evolutionUrl}/instance/connect/${instanceName}`, {
+            headers: { 'apikey': apikey }
+          })
+          const freshConnectData = await freshConnectRes.json() as any
+          return response.ok({ 
+            status: 'pending', 
+            qrCode: freshConnectData?.base64 || freshConnectData?.qrcode
+          })
+      }
+
       return response.ok({ 
         status: 'pending', 
         qrCode: connectData?.base64 || connectData?.qrcode

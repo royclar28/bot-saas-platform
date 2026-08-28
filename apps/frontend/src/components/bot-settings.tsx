@@ -22,8 +22,8 @@ export function BotSettings({ bot }: { bot: any }) {
         }
     }, []);
 
-    const loadQR = async () => {
-        setIsLoadingQR(true);
+    const loadQR = async (silent = false) => {
+        if (!silent) setIsLoadingQR(true);
         const data = await getBotQR(bot.id);
         if (data?.status === 'connected') {
             setStatus('connected');
@@ -33,10 +33,11 @@ export function BotSettings({ bot }: { bot: any }) {
             setQrCode(data.qrCode);
             setStatus('pending');
             setIsLoadingQR(false);
+            // Auto-polling silencioso para detectar cuando escaneas el QR
+            setTimeout(() => loadQR(true), 3000);
         } else if (data?.status === 'pending') {
             // El motor está arrancando pero el QR aún no está listo.
-            // Hacemos polling automático en 2 segundos.
-            setTimeout(loadQR, 2000);
+            setTimeout(() => loadQR(true), 2000);
         } else {
             setIsLoadingQR(false);
         }
@@ -109,7 +110,7 @@ export function BotSettings({ bot }: { bot: any }) {
                                             <img src={qrCode.startsWith('data:') ? qrCode : `data:image/png;base64,${qrCode}`} alt="WhatsApp QR Code" className="h-64 w-64 object-contain" />
                                         </div>
                                         <button 
-                                            onClick={loadQR}
+                                            onClick={() => loadQR(false)}
                                             className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-medium hover:bg-secondary/80"
                                         >
                                             <RefreshCw className="h-4 w-4" /> Generar nuevo QR
@@ -119,7 +120,7 @@ export function BotSettings({ bot }: { bot: any }) {
                                     <div className="flex flex-col items-center">
                                         <p className="text-sm text-muted-foreground mb-4">No se pudo obtener el QR.</p>
                                         <button 
-                                            onClick={loadQR}
+                                            onClick={() => loadQR(false)}
                                             className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"
                                         >
                                             Reintentar

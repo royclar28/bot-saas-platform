@@ -3,6 +3,7 @@ import { ChatOpenAI } from '@langchain/openai'
 import { PromptTemplate } from '@langchain/core/prompts'
 import Customer from '#models/customer'
 import Bot from '#models/bot'
+import ChatHistory from '#models/chat_history'
 import env from '#start/env'
 
 export default class WebhookController {
@@ -49,8 +50,22 @@ export default class WebhookController {
                 
             const isRegistered = !!customer
             const currentDebt = customer ? customer.currentDebt : 0
+            
+            const isBotEnabled = customer ? customer.botEnabled : true;
 
-            // 3. CONFIGURAR EL MODELO (LangChain)
+            // 3. Guardar mensaje entrante
+            await ChatHistory.create({
+                botId: bot.id,
+                sessionId: phone,
+                message: { type: 'human', text: message }
+            })
+
+            if (!isBotEnabled) {
+                console.log(`⏸️ Bot pausado para ${phone}. Humano tomará el control.`)
+                return;
+            }
+
+            // 4. CONFIGURAR EL MODELO (LangChain)
             const model = new ChatOpenAI({
                 modelName: 'llama-3.1-8b-instant',
                 temperature: 0.3,
@@ -60,7 +75,7 @@ export default class WebhookController {
                 }
             })
 
-            // 4. AUMENTO (Augmented): Crear el Prompt Dinámico
+            // 5. AUMENTO (Augmented): Crear el Prompt Dinámico
             const prompt = PromptTemplate.fromTemplate(`
         ${basePrompt}
         
@@ -89,7 +104,14 @@ export default class WebhookController {
             console.log('🧠 IA Pensando...')
             const aiResponse = await model.invoke(formattedPrompt)
 
-            // 5. ENVIAR A WHATSAPP: Hacer POST a Evolution API
+            // Guardar respuesta de IA
+            await ChatHistory.create({
+                botId: bot.id,
+                sessionId: phone,
+                message: { type: 'ai', text: aiResponse.content }
+            })
+
+            // 6. ENVIAR A WHATSAPP: Hacer POST a Evolution API
             const evolutionUrl = `${env.get('EVOLUTION_API_URL')}/message/sendText/${instanceName}`
 
             const reqEvolution = await fetch(evolutionUrl, {
